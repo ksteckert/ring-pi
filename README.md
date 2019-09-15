@@ -15,7 +15,7 @@ It is a very basic CLI tool for arming a Ring home security system in HOME or AW
 This will show the current state of your ring alarm.
 
 ## auth
-If an auth.json file is not present, the `auth` flag defaults to `true`.
+If an `auth.json` file is not present, the `auth` flag defaults to `true`.
 
 This will prompt for your Ring username/password, and will then save the refreshToken to `auth.json` in your project directory.
 
@@ -28,7 +28,7 @@ Whenever you run this script locally with the auth flag, a copy of `auth.json` w
 
 The `refreshToken` will expire every so often (~ 2 weeks).  This is goverened by Ring.  As far as I know Ring is a closed system, so there isn't a way to get a permanent API key.  I run this on my system once a week with the `auth` flag to push a new refreshToken to my Raspberry Pi.
 
-Do you want to update the token w/o arming/disarming, run it with `status`:
+Do you want to update the token without arming/disarming, run it with `status`:
 ```
 ring status auth [srv]
 ```
