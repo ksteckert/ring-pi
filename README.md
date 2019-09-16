@@ -34,3 +34,6 @@ ring status auth [srv]
 ```
 
 This does not yet support certificate based authentication.  Feel free to add that support if you need it.
+
+## Other
+If you don't want to worry about the refreshToken expiring, you can edit the code to authenticate soley with username/pass.  I choose not to do this for security reasons, but it's an option.
