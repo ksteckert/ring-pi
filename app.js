@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 
 const fs = require('fs')
+var path = require('path')
 let readline = require('readline')
-var scp2 = require('scp2')
+var scp2 = require('scp2').Client
 var args = require('minimist')(process.argv.slice(2))
 var { RingApi } = require('ring-client-api')
 
 var srv = fs.existsSync(`${__dirname}/srv.json`) ? require(`${__dirname}/srv.json`) : false
 var auth = fs.existsSync(`${__dirname}/auth.json`) ? require(`${__dirname}/auth.json`) : false
+var cert = fs.existsSync(`${__dirname}/cert.key`) ? fs.readFileSync(`${__dirname}/cert.key`) : false
 var ring
 var home
 
@@ -45,7 +47,8 @@ async function copyTokenToServer(){
   if (srv.path) console.log('project path (on dest):', dirpath)
   let username = srv.username || await prompt('username: ')
   if (srv.username) console.log('user:', username)
-  let password = await prompt('password: ')
+  let password = cert ? null : await prompt('password: ')
+  if (cert) console.log('authentication via key/cert')
   let copyResults = await copySCP(username, password, host, dirpath)
 
   if (args.srv || getArg('srv')){
@@ -58,8 +61,17 @@ async function copyTokenToServer(){
 }
 
 function copySCP(u, p, h, d){
+  let opts = {
+    port: 22,
+    host: h,
+    username: u,
+  }
+  if (p) opts.password = p
+  if (cert) opts.privateKey = cert
+
   return new Promise(resolve => {
-    scp2.scp(`${__dirname}/auth.json`, `${u}:${p}@${h}:${d}/auth.json`, err => {
+    let client = new scp2(opts)
+    client.upload(`${__dirname}/auth.json`, `${d}/auth.json`, err => {
       let msg
       if (err) {
         msg = 'The new refreshToken was NOT uploaded to the Raspberry Pi.'
