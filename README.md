@@ -1,6 +1,6 @@
 # ring-pi
 
-This project is based on [@dgreif/ring-alarm](https://www.npmjs.com/package/@dgreif/ring-alarm)
+This project is based on [ring-client-api](https://www.npmjs.com/package/ring-client-api)
 
 It is a very basic CLI tool for arming a Ring home security system in HOME or AWAY mode, and for DISARMING.
 
