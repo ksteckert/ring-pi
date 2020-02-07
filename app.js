@@ -4,10 +4,10 @@ const fs = require('fs')
 let readline = require('readline')
 var scp2 = require('scp2')
 var args = require('minimist')(process.argv.slice(2))
-var { RingApi } = require('@dgreif/ring-alarm')
+var { RingApi } = require('ring-client-api')
 
-var srv = fs.existsSync('./srv.json') ? require('./srv.json') : false
-var auth = fs.existsSync('./auth.json') ? require('./auth.json') : false
+var srv = fs.existsSync(`${__dirname}/srv.json`) ? require(`${__dirname}/srv.json`) : false
+var auth = fs.existsSync(`${__dirname}/auth.json`) ? require(`${__dirname}/auth.json`) : false
 var ring
 var home
 
@@ -51,7 +51,7 @@ async function copyTokenToServer(){
   if (args.srv || getArg('srv')){
     let cfg = {server: host, path: dirpath, username}
     let cfg_json = JSON.stringify(cfg, null, 2)
-    fs.writeFileSync('srv.json', cfg_json)
+    fs.writeFileSync(`${__dirname}/srv.json`, cfg_json)
   }
 
   return copyResults
@@ -59,7 +59,7 @@ async function copyTokenToServer(){
 
 function copySCP(u, p, h, d){
   return new Promise(resolve => {
-    scp2.scp('auth.json', `${u}:${p}@${h}:${d}/auth.json`, err => {
+    scp2.scp(`${__dirname}/auth.json`, `${u}:${p}@${h}:${d}/auth.json`, err => {
       let msg
       if (err) {
         msg = 'The new refreshToken was NOT uploaded to the Raspberry Pi.'
@@ -98,7 +98,7 @@ async function main() {
   if (promptForCreds) {
     let token = {refreshToken: ring.restClient.refreshToken}
     let token_json = JSON.stringify(token, null, 2)
-    fs.writeFileSync('auth.json', token_json)
+    fs.writeFileSync(`${__dirname}/auth.json`, token_json)
     if (srv || args.srv || getArg('srv')) {
       let copyStatus =  await copyTokenToServer()
       console.log(copyStatus)
