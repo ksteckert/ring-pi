@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const fs = require('fs')
-var path = require('path')
 let readline = require('readline')
 var scp2 = require('scp2').Client
 var args = require('minimist')(process.argv.slice(2))
