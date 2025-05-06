@@ -4,7 +4,7 @@ This project is based on [ring-client-api](https://www.npmjs.com/package/ring-cl
 
 It is a very basic CLI tool for arming a Ring home security system in HOME or AWAY mode, and for DISARMING.
 
-- Automatically arm your system to `HOME` every night
+- Automatically arm your system to `HOME` every night - test
 - Setup custom rules that interact with your smart home setup
 - Sitting at your computer, want to arm the alarm, but you're too lazy to get up and your phone is across the room?  Just run `ring home`.
 - Use your imagination
